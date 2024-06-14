@@ -1,0 +1,64 @@
+<launch>
+  <!-- Define model and position arguments -->
+  <arg name="model" default="waffle"/>
+  <arg name="x_pos" default="-7.0"/>
+  <arg name="y_pos" default="-7.0"/>
+  <arg name="z_pos" default="0.0"/>
+  
+  <arg name="x_pos1" default="-2.0"/>
+  <arg name="y_pos1" default="0.0"/>
+  <arg name="z_pos1" default="0.0"/>
+  
+  <arg name="x_pos2" default="0.0"/>
+  <arg name="y_pos2" default="-2.0"/>
+  <arg name="z_pos2" default="0.0"/>
+  
+  <arg name="x_pos3" default="2.0"/>
+  <arg name="y_pos3" default="0.0"/>
+  <arg name="z_pos3" default="0.0"/>
+  
+  <arg name="x_pos4" default="0.0"/>
+  <arg name="y_pos4" default="2.0"/>
+  <arg name="z_pos4" default="0.0"/>
+  
+  <!-- Include the Gazebo world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/env.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- Spawn TurtleBot3 with a unique namespace -->
+  <group ns="turtlebot3">
+    <param name="robot_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-param robot_description -urdf -model turtlebot3_$(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -Y 1.5708" />
+  </group>
+
+  <!-- Spawn wheel with a different namespace and set yaw orientation -->
+  <group ns="wheel1">
+    <param name="wheel_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_wheel1" args="-param wheel_description -urdf -model wheel1 -x $(arg x_pos1) -y $(arg y_pos1) -z $(arg z_pos1) -Y 4.71239" />
+  </group>
+  
+  <!-- Spawn wheel with a different namespace and set yaw orientation -->
+  <group ns="wheel2">
+    <param name="wheel_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_wheel2" args="-param wheel_description -urdf -model wheel2 -x $(arg x_pos2) -y $(arg y_pos2) -z $(arg z_pos2) -Y 6.28319" />
+  </group>
+  
+  <!-- Spawn wheel with a different namespace and set yaw orientation -->
+  <group ns="wheel3">
+    <param name="wheel_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_wheel3" args="-param wheel_description -urdf -model wheel3 -x $(arg x_pos3) -y $(arg y_pos3) -z $(arg z_pos3) -Y 1.5708" />
+  </group>
+  
+  <!-- Spawn wheel with a different namespace and set yaw orientation -->
+  <group ns="wheel4">
+    <param name="wheel_description" command="$(find xacro)/xacro $(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro" />
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_wheel4" args="-param wheel_description -urdf -model wheel4 -x $(arg x_pos4) -y $(arg y_pos4) -z $(arg z_pos4) -Y 3.14159" />
+  </group>
+</launch>
+
